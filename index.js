@@ -35,6 +35,39 @@ async function run() {
     //APIS----------------------------
 
     const galleryCollections= client.db('graphic-design-school').collection('gallery');
+    const userCollections= client.db('graphic-design-school').collection('users');
+
+    // user related apis  
+    app.post('/users', async(req,res)=>{
+      const user=req.body;
+      const result= await userCollections.insertOne(user);
+      res.send(result);
+    })
+
+    
+
+  
+//getting user data
+
+app.get('/users', async (req, res) => {
+  const email = req.query.email;
+
+  if (email) {
+    const user = await userCollections.findOne({ email });
+    if (!user) {
+      return res.status(404).send({ message: 'User not found' });
+    }
+    return res.send([user]); 
+  }
+
+  const users = await userCollections.find().toArray();
+  res.send(users);
+});
+
+
+
+
+
     app.get('/gallery', async(req,res)=>{
         const cursor =galleryCollections.find();
         const result=await cursor.toArray();
