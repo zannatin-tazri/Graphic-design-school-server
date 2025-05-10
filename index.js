@@ -3,7 +3,6 @@ const cors=require('cors');
 const app = express();
 const { MongoClient, ServerApiVersion, ObjectId} = require('mongodb');
 require('dotenv').config();
-// const { MongoClient, ServerApiVersion,  } = require('mongodb');
 
 
 const port=process.env.PORT || 5000;
@@ -38,8 +37,15 @@ async function run() {
 
     const galleryCollections= client.db('graphic-design-school').collection('gallery');
     const userCollections= client.db('graphic-design-school').collection('users');
+    const aboutUsCollections = client.db('graphic-design-school').collection('aboutUs');
+    
 
-    // user related apis  
+   app.get('/aboutus', async (req, res) => {
+  const result = await aboutUsCollections.find().toArray();
+  res.send(result);
+});
+    
+// user related apis  
     app.post('/users', async(req,res)=>{
       const user=req.body;
       const result= await userCollections.insertOne(user);
@@ -120,6 +126,40 @@ app.delete('/gallery/:id', async (req,res)=>{
         res.send(result);
 
     })
+
+
+ //Update about us --------------------------------------------------------
+
+    app.patch('/aboutus/:id', async (req, res) => {
+  const id = req.params.id;
+  const updatedData = req.body;
+  const filter = { _id: new ObjectId(id) };
+  const updateDoc = {
+    $set: {
+      title: updatedData.title,
+      description: updatedData.description
+    }
+  };
+  const result = await aboutUsCollections.updateOne(filter, updateDoc);
+  res.send(result);
+});
+
+
+
+// PATCH: Update About Us Photo
+app.patch('/aboutus/photo/:id', async (req, res) => {
+  const id = req.params.id;
+  const { photo_url } = req.body;
+  const filter = { _id: new ObjectId(id) };
+  const updateDoc = {
+    $set: {
+      photo_url: photo_url
+    }
+  };
+  const result = await aboutUsCollections.updateOne(filter, updateDoc);
+  res.send(result);
+});
+
 
   } finally {
     // Ensures that the client will close when you finish/error
