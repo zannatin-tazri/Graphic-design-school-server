@@ -1,8 +1,10 @@
 const express= require('express');
 const cors=require('cors');
 const app = express();
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId} = require('mongodb');
 require('dotenv').config();
+// const { MongoClient, ServerApiVersion,  } = require('mongodb');
+
 
 const port=process.env.PORT || 5000;
 
@@ -65,6 +67,50 @@ app.get('/users', async (req, res) => {
 });
 
 
+//make admin
+
+
+app.patch('/users/admin/:id', async (req, res) => {
+  const id = req.params.id;
+  const filter = { _id: new ObjectId(id) };
+  const updateDoc = {
+    $set: {
+      role: 'admin',
+    },
+  };
+  const result = await userCollections.updateOne(filter, updateDoc);
+  res.send(result);
+});
+
+
+
+// get user role by email 
+
+app.get('/users/admin/:email', async (req, res) => {
+  const email = req.params.email;
+  const user = await userCollections.findOne({ email });
+  res.send({ isAdmin: user?.role === 'admin' });
+});
+
+
+//add photo to gallery 
+
+app.post('/gallery', async (req, res) => {
+  const newPhoto = req.body;
+  const result = await galleryCollections.insertOne(newPhoto);
+  res.send(result);
+});
+
+
+//delete 
+
+
+app.delete('/gallery/:id', async (req,res)=>{
+  const id=req.params.id;
+  const query={_id: new ObjectId(id)};
+  const result =await galleryCollections.deleteOne(query);
+  res.send(result)
+})
 
 
 
