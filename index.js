@@ -3,8 +3,6 @@ const cors=require('cors');
 const app = express();
 const { MongoClient, ServerApiVersion, ObjectId} = require('mongodb');
 require('dotenv').config();
-
-
 const port=process.env.PORT || 5000;
 
 
@@ -46,11 +44,40 @@ async function run() {
 });
     
 // user related apis  
-    app.post('/users', async(req,res)=>{
-      const user=req.body;
-      const result= await userCollections.insertOne(user);
-      res.send(result);
-    })
+    app.post('/users', async (req, res) => {
+    const user = req.body;
+    try {
+        // Check if the user with the given email already exists
+        const existingUser = await userCollections.findOne({ email: user.email });
+        
+        if (existingUser) {
+            
+            const updatedUser = await userCollections.updateOne(
+                { email: user.email },
+                { $set: { name: user.name, phone: user.phone } }
+            );
+            
+            
+            res.send({
+                name: user.name,
+                phone: user.phone,
+                email: user.email,
+                _id: existingUser._id 
+            });
+        } else {
+            
+            const result = await userCollections.insertOne(user);
+            res.send({
+                name: user.name,
+                phone: user.phone,
+                email: user.email,
+                _id: result.insertedId 
+            });
+        }
+    } catch (err) {
+        res.status(500).send({ error: 'Error processing request' });
+    }
+});
 
     
 
