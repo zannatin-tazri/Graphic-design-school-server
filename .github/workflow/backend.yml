@@ -1,0 +1,44 @@
+name: Backend CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main  # Trigger workflow when code is pushed to the main branch
+
+jobs:
+  build_and_push_backend:
+    runs-on: ubuntu-latest  # This will run on an Ubuntu-based runner
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+
+    - name: Cache Docker layers
+      uses: actions/cache@v2
+      with:
+        path: /tmp/.buildx-cache
+        key: ${{ runner.os }}-docker-${{ github.sha }}
+        restore-keys: |
+          ${{ runner.os }}-docker-
+
+    - name: Build Docker image for Backend
+      run: |
+        docker build -t yourdockerhubusername/graphic-design-school-backend:latest ./graphic-design-school-server
+
+    - name: Log in to Docker Hub
+      uses: docker/login-action@v2
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+
+    - name: Push Docker image to Docker Hub
+      run: |
+        docker push yourdockerhubusername/graphic-design-school-backend:latest
+
+    - name: Deploy Backend (optional step)
+      run: |
+        # Example: SSH into server and pull the latest Docker image, or use any deployment method
+        ssh user@server "docker pull yourdockerhubusername/graphic-design-school-backend:latest && docker-compose up -d"
