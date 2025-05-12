@@ -1,10 +1,12 @@
 # 1.Run server locally
-Commands-
+Commands-  
+
 -git clone https://github.com/zannatin-tazri/Graphic-design-school-server.git.  
 
 -cd Graphic-design-school-server
 
-Create .env file to the same level as package.json.  
+Create .env file to the same level as package.json and paste environment variables   
+
 
 -"npm install"  
 
