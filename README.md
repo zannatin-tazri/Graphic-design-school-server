@@ -1,7 +1,7 @@
 # 1.Run server locally
 Commands-  
 
--git clone https://github.com/zannatin-tazri/Graphic-design-school-server.git.  
+-git clone https://github.com/zannatin-tazri/Graphic-design-school-server.git  
 
 -cd Graphic-design-school-server
 
