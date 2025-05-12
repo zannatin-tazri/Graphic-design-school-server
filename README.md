@@ -37,7 +37,9 @@ DB_PASS=JmbBMmvHcbtl8pgE
 # Build and run the container
 -systemctl start docker  
 
--run "docker compose up --build"   
+-run "docker compose up --build"     
+
+-docker ps -a (to see images are eunning)
 
 PORT : 5000  
 
