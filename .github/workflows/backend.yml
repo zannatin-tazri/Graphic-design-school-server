@@ -1,11 +1,11 @@
-name: Build and Push Backend
+name: Build, Push and Deploy Backend
 
 on:
   push:
     branches: [ main ]
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -28,3 +28,19 @@ jobs:
         file: ./Dockerfile
         push: true
         tags: ${{ secrets.DOCKER_USERNAME }}/graphic-backend:latest
+
+    - name: Deploy to Remote Server via SSH
+      uses: appleboy/ssh-action@v1.0.0
+      with:
+        host: ${{ secrets.REMOTE_HOST }}
+        username: ${{ secrets.REMOTE_USER }}
+        key: ${{ secrets.REMOTE_SSH_KEY }}
+        script: |
+          docker pull ${{ secrets.DOCKER_USERNAME }}/graphic-backend:latest
+          docker stop graphic-backend || true
+          docker rm graphic-backend || true
+          docker run -d \
+            --name graphic-backend \
+            -p 5000:5000 \
+            --env-file /home/${{ secrets.REMOTE_USER }}/backend.env \
+            ${{ secrets.DOCKER_USERNAME }}/graphic-backend:latest
