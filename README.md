@@ -1,16 +1,22 @@
 # 1.Run server locally
 Commands-
--git clone https://github.com/zannatin-tazri/Graphic-design-school-server.git
+-git clone https://github.com/zannatin-tazri/Graphic-design-school-server.git.  
+
 -cd Graphic-design-school-server
 
-Create .env file to the same level as package.json
--"npm install"
--nodemon.index.js
+Create .env file to the same level as package.json.  
+
+-"npm install"  
+
+-nodemon.index.js  
+
 
 
 # Required environment variables 
-DB_USER=graphic_gallery
-DB_PASS=JmbBMmvHcbtl8pgE
+DB_USER=graphic_gallery  
+
+DB_PASS=JmbBMmvHcbtl8pgE  
+
 
 
 # Build and run the container
