@@ -20,11 +20,15 @@ DB_PASS=JmbBMmvHcbtl8pgE
 
 
 # Build and run the container
--systemctl start docker
--run "docker compose up --build"
-PORT : 5000
+-systemctl start docker  
+
+-run "docker compose up --build"   
+
+PORT : 5000  
+
 
 # CI/CD pipeline yml file 
-https://github.com/zannatin-tazri/Graphic-design-school-server/blob/main/.github/workflows/backend.yml
+https://github.com/zannatin-tazri/Graphic-design-school-server/blob/main/.github/workflows/backend.yml  
+
 
 The backend.yml file is configured for automating the CI/CD pipeline of the backend. It builds the Docker image, pushes it to Docker Hub, and deploys it to a remote server via SSH upon every push to the main branch.
