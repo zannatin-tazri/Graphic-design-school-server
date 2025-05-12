@@ -1,3 +1,16 @@
+# Prerequisites
+Before running this project, make sure you have the following installed:  
+
+Node.js (v18 or later)  
+
+npm (Node Package Manager)  
+
+Docker & Docker Compose  
+
+Git  
+
+VS Code or any code editor
+
 # Run server locally
 Commands-  
 
