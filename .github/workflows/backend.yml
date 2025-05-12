@@ -24,7 +24,7 @@ jobs:
     - name: Build and push backend Docker image
       uses: docker/build-push-action@v5
       with:
-        context: ./graphic-design-school-server
-        file: ./graphic-design-school-server/Dockerfile
+        context: ./
+        file: ./Dockerfile
         push: true
         tags: ${{ secrets.DOCKER_USERNAME }}/graphic-backend:latest
